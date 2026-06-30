@@ -65,6 +65,257 @@
             color: #8b92a5;
             margin-top: 2px;
         }
+        /* ====== NAVBAR ====== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 18px 48px;
+            background: #ffffff;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.04);
+            border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        /* ----- LOGO (left) ----- */
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            text-decoration: none;
+            flex-shrink: 0;
+        }
+
+        .logo-icon-wrap {
+            position: relative;
+            width: 48px;
+            height: 48px;
+            flex-shrink: 0;
+        }
+
+        /* Gold rotating ring */
+        .logo-icon-wrap::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            padding: 2.5px;
+            background: conic-gradient(from 0deg, #c9a84c, #f8e3a0, #c9a84c, #f8e3a0, #c9a84c);
+            -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: xor;
+            mask-composite: exclude;
+            animation: spin 10s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .logo-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #ffffff;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+            display: block;
+        }
+
+        .logo-text {
+            font-size: 24px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            color: #0b1a33;
+        }
+
+        .logo-text span {
+            background: linear-gradient(135deg, #c9a84c, #f8e3a0);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ----- HIDE CHECKBOX ----- */
+        #check {
+            display: none;
+        }
+
+        /* ----- HAMBURGER LABEL (hidden on desktop) ----- */
+        .checkd {
+            display: none;
+            font-size: 28px;
+            line-height: 1;
+            cursor: pointer;
+            color: #0b1a33;
+            user-select: none;
+            transition: transform 0.3s ease;
+        }
+
+        /* ----- MENU (right, horizontal on desktop) ----- */
+        .menu {
+            display: flex;
+            align-items: center;
+            gap: 32px;
+            list-style: none;
+            transition: all 0.35s ease;
+        }
+
+        .menu li a {
+            font-size: 13px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: #4b5563;
+            padding: 6px 0;
+            position: relative;
+            transition: color 0.3s ease;
+        }
+
+        /* Underline hover effect */
+        .menu li a::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2.5px;
+            border-radius: 4px;
+            background: linear-gradient(90deg, #c9a84c, #f8e3a0);
+            transition: width 0.3s ease;
+        }
+
+        .menu li a:hover {
+            color: #0b1a33;
+        }
+
+        .menu li a:hover::after {
+            width: 100%;
+        }
+
+        .menu li a.active {
+            color: #0b1a33;
+        }
+
+        .menu li a.active::after {
+            width: 100%;
+        }
+
+        /* ====== RESPONSIVE (mobile) ====== */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 14px 20px;
+            }
+
+            /* Show hamburger */
+            .checkd {
+                display: block;
+            }
+
+            /* Hide menu initially (collapsed) */
+            .menu {
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: #ffffff;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 0;
+                padding: 0 20px;
+                max-height: 0;
+                overflow: hidden;
+                opacity: 0;
+                transform: translateY(-6px);
+                box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+                border-top: 1px solid rgba(0, 0, 0, 0.04);
+                pointer-events: none;
+                transition: max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+                            opacity 0.3s ease,
+                            padding 0.3s ease,
+                            transform 0.4s ease;
+            }
+
+            .menu li {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+            }
+
+            .menu li:last-child {
+                border-bottom: none;
+            }
+
+            .menu li a {
+                display: block;
+                padding: 16px 0;
+                font-size: 15px;
+                letter-spacing: 1.5px;
+            }
+
+            /* ----- CHECKBOX HACK: when checked, expand menu ----- */
+            #check:checked ~ .menu {
+                max-height: 500px;
+                padding: 8px 20px 16px;
+                opacity: 1;
+                transform: translateY(0);
+                pointer-events: all;
+            }
+
+            /* Turn ☰ into ✕ when checked */
+            #check:checked ~ .checkd {
+                transform: rotate(90deg);
+            }
+            /* Optionally change the icon content using pseudo-element */
+            .checkd::after {
+                content: '☰';
+                display: inline-block;
+                transition: transform 0.4s ease;
+            }
+            #check:checked ~ .checkd::after {
+                content: '✕';
+                transform: rotate(0deg);
+            }
+            /* Hide the original text inside label so pseudo takes over */
+            .checkd {
+                font-size: 0;
+            }
+            .checkd::after {
+                font-size: 28px;
+                font-weight: 300;
+            }
+
+            .logo-text {
+                font-size: 20px;
+            }
+
+            .logo-icon-wrap {
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .navbar {
+                padding: 12px 16px;
+            }
+            .logo-text {
+                font-size: 17px;
+            }
+            .logo-icon-wrap {
+                width: 36px;
+                height: 36px;
+            }
+            .menu li a {
+                font-size: 13px;
+                padding: 14px 0;
+            }
+            .checkd::after {
+                font-size: 24px;
+            }
+        }
         .checkbox-card {
             transition: all 0.2s ease;
         }
@@ -141,12 +392,34 @@
             </div>
         </div>
     </header>
+<<!-- ====== NAVBAR ====== -->
+    <nav class="navbar">
 
+
+        <!-- ====== YOUR EXACT STRUCTURE (checkbox + label + menu) ====== -->
+        <input type="checkbox" id="check">
+
+        <label for="check" class="checkd">☰</label>
+
+        <ul class="menu">
+            <li><a href="#" class="active">HOME</a></li>
+            <li><a href="#2nd">2ND</a></li>
+            <li><a href="#3rd">3RD</a></li>
+            <li><a href="#4th">4TH</a></li>
+            <li><a href="#5th">5TH</a></li>
+        </ul>
+
+    </nav>
+
+    <!-- ====== PAGE CONTENT (demo) ====== -->
+    <main style="flex:1; display:flex; justify-content:center; align-items:center; padding:40px; color:#94a3b8; font-size:14px; letter-spacing:1px; text-transform:uppercase;">
+        Pure CSS Checkbox Hack — No JavaScript
+    </main>
     <!-- Main Content -->
     <main class="max-w-6xl mx-auto px-4 py-8">
 
         <!-- 2ND Box -->
-        <section class="mb-8">
+        <section class="mb-8" id="2nd">
             <div class="flex items-center gap-2 mb-4">
                 <div class="w-1 h-6 bg-teal-600 rounded-full"></div>
                 <h2 class="text-xl font-semibold text-slate-800">2ND Box</h2>
@@ -899,7 +1172,7 @@
 
         <!-- 3RD Box -->
         <section class="mb-8">
-            <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center gap-2 mb-4" id="3rd">
                 <div class="w-1 h-6 bg-teal-600 rounded-full"></div>
                 <h2 class="text-xl font-semibold text-slate-800">3RD Box</h2>
                 <span class="text-sm text-slate-500 ml-2">— Operative, Endodontic & Fixed</span>
@@ -1956,7 +2229,7 @@
 
         <!-- 4TH Box -->
         <section class="mb-8">
-            <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center gap-2 mb-4" id="4th">
                 <div class="w-1 h-6 bg-teal-600 rounded-full"></div>
                 <h2 class="text-xl font-semibold text-slate-800">4TH Box</h2>
                 <span class="text-sm text-slate-500 ml-2">— Rubber Dam, Surgery & Orthodontics</span>
@@ -3228,7 +3501,7 @@
 
         <!-- 5TH Box -->
         <section class="mb-8">
-            <div class="flex items-center gap-2 mb-4">
+            <div class="flex items-center gap-2 mb-4" id="5th">
                 <div class="w-1 h-6 bg-teal-600 rounded-full"></div>
                 <h2 class="text-xl font-semibold text-slate-800">5TH Box</h2>
                 <span class="text-sm text-slate-500 ml-2">— Scaler, Endo & Periodontal</span>
